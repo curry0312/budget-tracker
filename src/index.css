@@ -1,0 +1,21 @@
+@import url('https://fonts.googleapis.com/css2?family=Neucha&family=Tilt+Warp&display=swap');
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+#root,
+html,
+body,
+.app{
+  height: 100%;
+}
+
+@layer components{
+  
+}
