@@ -9,7 +9,8 @@ module.exports = {
       colors:{
         'lightblue':{
           'ocean':'#007FFF',
-          'sky':'#00B7EB'
+          'sky':'#00B7EB',
+          'diamond':'#4168E1',
         }
       },
       transitionProperty:{
