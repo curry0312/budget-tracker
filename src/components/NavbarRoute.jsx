@@ -2,7 +2,7 @@ import React from "react";
 
 function NavbarRoute({title,Icon}) {
   return (
-    <div className="text-white font-Neucha flex gap-2 cursor-pointer">
+    <div className="text-white font-Neucha flex cursor-pointer">
       <div>
         {Icon}
       </div>

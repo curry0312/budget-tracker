@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import HomeEachBudget from "../components/HomeEachBudget";
@@ -10,9 +10,11 @@ import { daySplit, yearMonthSplit } from "../util/budgetDateSpilt";
 import { currency } from "../util/currency";
 
 function Home() {
+
   const budgets = useSelector(budgetsSelector);
   console.log('budgets',budgets);
   const navigate = useNavigate();
+
   //set current year and month
   const [year, setYear] = useState(new Date().getFullYear());
   const [month, setMonth] = useState(new Date().getMonth() + 1);
@@ -24,7 +26,7 @@ function Home() {
     const b_day = daySplit(b.date)
     return  a_day - b_day
   })
-
+  
   return (
     <section className="sm:ml-[200px] p-4">
       {/*change date*/}
@@ -89,12 +91,19 @@ function Home() {
           }
         })}
       </div>
-      <div>
+      {/*buttons*/}
+      <div className="flex space-x-2">
         <button
           onClick={() => navigate("/addnewbudget")}
           className="bg-lightblue-diamond text-white font-Neucha rounded-md px-4 py-2 transition duration-200 ease-in hover:bg-blue-500"
         >
           Add new budget
+        </button>
+        <button
+          onClick={() => navigate("/addnewcategory")}
+          className="bg-green-500 text-white font-Neucha rounded-md px-4 py-2 transition duration-200 ease-in hover:bg-green-400"
+        >
+          Add new category
         </button>
       </div>
     </section>

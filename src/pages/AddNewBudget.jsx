@@ -108,7 +108,7 @@ function AddNewBudget() {
                 {...register("category")}
               >
                 {options.map((option) => (
-                  <option key={option.value}>{option.label}</option>
+                  <option key={option.value} value={option.value}>{option.label}</option>
                 ))}
               </select>
               <button onClick={()=>{navigate('/addnewcategory')}} className="text-white bg-green-500 font-Neucha rounded-md hover:bg-green-400">Add new Category</button>

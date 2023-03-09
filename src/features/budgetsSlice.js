@@ -10,6 +10,27 @@ const initialState = {
       category: "dinner",
       date: "2023-03-01",
     },
+    {
+      id: "rfwrgw443df",
+      name: "吃1",
+      price: '12',
+      category: "lunch",
+      date: "2023-03-09",
+    },
+    {
+      id: "uwejh88333df",
+      name: "吃3",
+      price: '60',
+      category: "lunch",
+      date: "2023-03-20",
+    },
+    {
+      id: "kuwe333df",
+      name: "吃2",
+      price: '12',
+      category: "breakfast",
+      date: "2023-03-12",
+    },
   ],
 };
 
