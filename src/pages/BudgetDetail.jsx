@@ -4,14 +4,12 @@ import NavigateBeforeIcon from "@mui/icons-material/NavigateBefore";
 import { IconButton } from "@mui/material";
 import { useSelector } from "react-redux";
 import { budgetsSelector } from "../features/budgetsSlice";
-import classifyCategory from "../data/pieCategoryClassification";
 
 function BudgetDetail() {
   const budgets = useSelector(budgetsSelector)
   const [year, setYear] = useState(new Date().getFullYear())
   const [month, setMonth] = useState(new Date().getMonth() + 1)
-  const classifyData = classifyCategory(budgets,year,month)
-  console.log(classifyData)
+  
 
   return (
     <div className="sm:ml-[200px] p-4">
