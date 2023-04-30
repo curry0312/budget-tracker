@@ -4,12 +4,58 @@ import NavigateBeforeIcon from "@mui/icons-material/NavigateBefore";
 import { IconButton } from "@mui/material";
 import { useSelector } from "react-redux";
 import { budgetsSelector } from "../features/budgetsSlice";
+import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
+import { Pie } from "react-chartjs-2";
 
 function BudgetDetail() {
-  const budgets = useSelector(budgetsSelector)
-  const [year, setYear] = useState(new Date().getFullYear())
-  const [month, setMonth] = useState(new Date().getMonth() + 1)
-  
+  const budgets = useSelector(budgetsSelector);
+  const [year, setYear] = useState(new Date().getFullYear());
+  const [month, setMonth] = useState(new Date().getMonth() + 1);
+
+  ChartJS.register(ArcElement, Tooltip, Legend);
+
+  function total() {
+    const currentYearMonthData = [];
+    console.log(budgets.length);
+    for (let i = 0; i < budgets.length; i++) {
+      if (
+        parseFloat(budgets[i].date.split("-")[0]) === year &&
+        parseFloat(budgets[i].date.split("-")[1]) === month
+      ) {
+        currentYearMonthData.push(budgets[i]);
+      }
+    }
+    console.log(currentYearMonthData);
+    const eachCategoryTotalExpense = [];
+    for (let i = 0; i < currentYearMonthData.length; i++) {
+      for (let j = 0; j <= eachCategoryTotalExpense.length; j++) {
+        if (eachCategoryTotalExpense.length == 0) {
+          eachCategoryTotalExpense.push({
+            category: currentYearMonthData[i].category,
+            price: currentYearMonthData[i].price,
+          });
+        }
+        if (
+          eachCategoryTotalExpense[j].category !==
+          currentYearMonthData[i].category
+        ) {
+          eachCategoryTotalExpense.push({
+            category: currentYearMonthData[i].category,
+            price: currentYearMonthData[i].price,
+          });
+          break;
+        } else {
+          eachCategoryTotalExpense[j].price =
+            eachCategoryTotalExpense[j].price + currentYearMonthData[i].price;
+          break;
+        }
+      }
+    }
+    return eachCategoryTotalExpense;
+  }
+
+  const data = total();
+  console.log(data);
 
   return (
     <div className="sm:ml-[200px] p-4">
@@ -47,6 +93,7 @@ function BudgetDetail() {
           <NavigateNextIcon />
         </IconButton>
       </div>
+      <div>{/* <Pie data={data}/> */}</div>
     </div>
   );
 }
