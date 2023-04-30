@@ -8,7 +8,7 @@ const initialState = {
       name: "吃摩斯",
       price: '12',
       category: "dinner",
-      date: "2023-03-01",
+      date: "2023-02-01",
     },
     {
       id: "rfwrgw443df",
@@ -29,7 +29,7 @@ const initialState = {
       name: "吃2",
       price: '12',
       category: "breakfast",
-      date: "2023-03-12",
+      date: "2023-04-12",
     },
   ],
 };
@@ -53,10 +53,17 @@ export const budgetsSlice = createSlice({
       });
       state.budgets = [...newCopyBudgets]
     },
+    deleteBudgets:(state,action) =>{
+      const copyBudgets = [...state.budgets]
+      const newFilteredBudgets = copyBudgets.filter((budget,index)=>{
+        return budget.id !== action.payload
+      })
+      state.budgets = [...newFilteredBudgets]
+    }
   },
 });
 
-export const { addBudget, editBudget } = budgetsSlice.actions;
+export const { addBudget, editBudget, deleteBudgets } = budgetsSlice.actions;
 
 export const budgetsSelector = (state) => state.budgets.budgets;
 
