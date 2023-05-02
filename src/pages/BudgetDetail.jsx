@@ -5,6 +5,7 @@ import { IconButton } from "@mui/material";
 import { useSelector } from "react-redux";
 import { budgetsSelector } from "../features/budgetsSlice";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
+import { Pie } from "react-chartjs-2";
 
 function BudgetDetail() {
   const budgets = useSelector(budgetsSelector);
@@ -27,37 +28,35 @@ function BudgetDetail() {
     console.log(currentYearMonthData);
     const eachCategoryTotalExpense = [];
     for (let i = 0; i < currentYearMonthData.length; i++) {
-      console.log("i =",i)
-      console.log("eachCategoryTotalExpense.length =", eachCategoryTotalExpense.length);
+      console.log("i =", i);
+      console.log(
+        "eachCategoryTotalExpense.length =",
+        eachCategoryTotalExpense.length
+      );
       for (let j = 0; j === 0 || j < eachCategoryTotalExpense.length; j++) {
-        console.log("j =",j)
-        console.log("-------------------")
+        console.log("j =", j);
+        console.log("-------------------");
         if (eachCategoryTotalExpense.length == 0) {
           eachCategoryTotalExpense.push({
             category: currentYearMonthData[i].category,
             price: parseFloat(currentYearMonthData[i].price),
           });
-          break
-        } 
-        else if (
+          break;
+        } else if (
           eachCategoryTotalExpense[j].category ===
           currentYearMonthData[i].category
         ) {
           eachCategoryTotalExpense[j].price =
             parseFloat(eachCategoryTotalExpense[j].price) +
             parseFloat(currentYearMonthData[i].price);
-          break
-        } 
-        else if (
-          j === eachCategoryTotalExpense.length - 1
-        ) {
+          break;
+        } else if (j === eachCategoryTotalExpense.length - 1) {
           eachCategoryTotalExpense.push({
-            category:currentYearMonthData[i].category,
-            price:parseFloat(currentYearMonthData[i].price)
-          })
-          break
-        } 
-        else {
+            category: currentYearMonthData[i].category,
+            price: parseFloat(currentYearMonthData[i].price),
+          });
+          break;
+        } else {
           continue;
         }
       }
@@ -65,8 +64,47 @@ function BudgetDetail() {
     return eachCategoryTotalExpense;
   }
 
-  const data = total();
-  console.log(data);
+  const filteredCurrentYearMonthData = total();
+  console.log("filteredCurrentYearMonthData:", filteredCurrentYearMonthData);
+
+  function split() {
+    const labels = [];
+    const prices = [];
+    filteredCurrentYearMonthData.forEach((data) => {
+      labels.push(data.category);
+      prices.push(data.price);
+    });
+    return [labels, prices];
+  }
+
+  const [labels, prices] = split();
+
+  const data = {
+    labels: [...labels],
+    datasets: [
+      {
+        label: "Total",
+        data: [...prices],
+        backgroundColor: [
+          "rgba(255, 99, 132, 0.2)",
+          "rgba(54, 162, 235, 0.2)",
+          "rgba(255, 206, 86, 0.2)",
+          "rgba(75, 192, 192, 0.2)",
+          "rgba(153, 102, 255, 0.2)",
+          "rgba(255, 159, 64, 0.2)",
+        ],
+        borderColor: [
+          "rgba(255, 99, 132, 1)",
+          "rgba(54, 162, 235, 1)",
+          "rgba(255, 206, 86, 1)",
+          "rgba(75, 192, 192, 1)",
+          "rgba(153, 102, 255, 1)",
+          "rgba(255, 159, 64, 1)",
+        ],
+        borderWidth: 1,
+      },
+    ],
+  };
 
   return (
     <div className="sm:ml-[200px] p-4">
@@ -104,7 +142,21 @@ function BudgetDetail() {
           <NavigateNextIcon />
         </IconButton>
       </div>
-      <div>{/* <Pie data={data}/> */}</div>
+      <div className="flex gap-5">
+        {filteredCurrentYearMonthData.map((e, index) => {
+          return (
+            <div key={index} className="font-Tilt">
+              <div className="text-blue-400 text-2xl">{e.category}</div>
+              <div className="text-red-600 text-md">{e.price}</div>
+            </div>
+          );
+        })}
+      </div>
+      <div className="flex justify-center py-5 flex-1">
+        <div>
+          <Pie data={data} />
+        </div>
+      </div>
     </div>
   );
 }

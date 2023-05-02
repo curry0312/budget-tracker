@@ -66,6 +66,13 @@ const initialState = {
       category: "lunch",
       date: "2023-05-04",
     },
+    {
+      id: "sp59vdva",
+      name: "吃11",
+      price: '150',
+      category: "breakfast",
+      date: "2023-05-09",
+    },
   ],
 };
 
