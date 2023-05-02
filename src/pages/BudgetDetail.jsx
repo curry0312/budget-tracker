@@ -5,7 +5,6 @@ import { IconButton } from "@mui/material";
 import { useSelector } from "react-redux";
 import { budgetsSelector } from "../features/budgetsSlice";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
-import { Pie } from "react-chartjs-2";
 
 function BudgetDetail() {
   const budgets = useSelector(budgetsSelector);
@@ -28,26 +27,38 @@ function BudgetDetail() {
     console.log(currentYearMonthData);
     const eachCategoryTotalExpense = [];
     for (let i = 0; i < currentYearMonthData.length; i++) {
-      for (let j = 0; j <= eachCategoryTotalExpense.length; j++) {
+      console.log("i =",i)
+      console.log("eachCategoryTotalExpense.length =", eachCategoryTotalExpense.length);
+      for (let j = 0; j === 0 || j < eachCategoryTotalExpense.length; j++) {
+        console.log("j =",j)
+        console.log("-------------------")
         if (eachCategoryTotalExpense.length == 0) {
           eachCategoryTotalExpense.push({
             category: currentYearMonthData[i].category,
-            price: currentYearMonthData[i].price,
+            price: parseFloat(currentYearMonthData[i].price),
           });
-        }
-        if (
-          eachCategoryTotalExpense[j].category !==
+          break
+        } 
+        else if (
+          eachCategoryTotalExpense[j].category ===
           currentYearMonthData[i].category
         ) {
-          eachCategoryTotalExpense.push({
-            category: currentYearMonthData[i].category,
-            price: currentYearMonthData[i].price,
-          });
-          break;
-        } else {
           eachCategoryTotalExpense[j].price =
-            eachCategoryTotalExpense[j].price + currentYearMonthData[i].price;
-          break;
+            parseFloat(eachCategoryTotalExpense[j].price) +
+            parseFloat(currentYearMonthData[i].price);
+          break
+        } 
+        else if (
+          j === eachCategoryTotalExpense.length - 1
+        ) {
+          eachCategoryTotalExpense.push({
+            category:currentYearMonthData[i].category,
+            price:parseFloat(currentYearMonthData[i].price)
+          })
+          break
+        } 
+        else {
+          continue;
         }
       }
     }

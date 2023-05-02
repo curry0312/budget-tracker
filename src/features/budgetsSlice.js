@@ -31,6 +31,41 @@ const initialState = {
       category: "breakfast",
       date: "2023-04-12",
     },
+    {
+      id: "dvsvsvsjdvj",
+      name: "吃2",
+      price: '30',
+      category: "dinner",
+      date: "2023-04-30",
+    },
+    {
+      id: "9ividvjv",
+      name: "吃7",
+      price: '900',
+      category: "dinner",
+      date: "2023-05-01",
+    },
+    {
+      id: "vftcdvjv",
+      name: "吃9",
+      price: '200',
+      category: "lunch",
+      date: "2023-05-03",
+    },
+    {
+      id: "jijidvjv",
+      name: "吃8",
+      price: '400',
+      category: "dinner",
+      date: "2023-05-02",
+    },
+    {
+      id: "sfdsvvjf",
+      name: "吃10",
+      price: '300',
+      category: "lunch",
+      date: "2023-05-04",
+    },
   ],
 };
 
