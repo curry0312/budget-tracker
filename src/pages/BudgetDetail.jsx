@@ -6,78 +6,25 @@ import { useSelector } from "react-redux";
 import { budgetsSelector } from "../features/budgetsSlice";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 import { Pie } from "react-chartjs-2";
+import { currency } from "../util/currency";
+import { getCurrentYearMonthBudgets } from "../logic/getCurrentYearMonthBudgets";
+import { getSplitLabelsAndPrices } from "../logic/getSplitLabelsAndPrices";
 
 function BudgetDetail() {
   const budgets = useSelector(budgetsSelector);
   const [year, setYear] = useState(new Date().getFullYear());
   const [month, setMonth] = useState(new Date().getMonth() + 1);
 
+  const filteredCurrentYearMonthData = getCurrentYearMonthBudgets(budgets,year,month);
+  
+  const [labels, prices] = getSplitLabelsAndPrices(filteredCurrentYearMonthData);
+
+  const totalPrice = filteredCurrentYearMonthData.reduce((total, e) => {
+    return (total = total + parseFloat(e.price));
+  }, 0);
+  
+  /*Chart Library*/
   ChartJS.register(ArcElement, Tooltip, Legend);
-
-  function total() {
-    const currentYearMonthData = [];
-    console.log(budgets.length);
-    for (let i = 0; i < budgets.length; i++) {
-      if (
-        parseFloat(budgets[i].date.split("-")[0]) === year &&
-        parseFloat(budgets[i].date.split("-")[1]) === month
-      ) {
-        currentYearMonthData.push(budgets[i]);
-      }
-    }
-    console.log(currentYearMonthData);
-    const eachCategoryTotalExpense = [];
-    for (let i = 0; i < currentYearMonthData.length; i++) {
-      console.log("i =", i);
-      console.log(
-        "eachCategoryTotalExpense.length =",
-        eachCategoryTotalExpense.length
-      );
-      for (let j = 0; j === 0 || j < eachCategoryTotalExpense.length; j++) {
-        console.log("j =", j);
-        console.log("-------------------");
-        if (eachCategoryTotalExpense.length == 0) {
-          eachCategoryTotalExpense.push({
-            category: currentYearMonthData[i].category,
-            price: parseFloat(currentYearMonthData[i].price),
-          });
-          break;
-        } else if (
-          eachCategoryTotalExpense[j].category ===
-          currentYearMonthData[i].category
-        ) {
-          eachCategoryTotalExpense[j].price =
-            parseFloat(eachCategoryTotalExpense[j].price) +
-            parseFloat(currentYearMonthData[i].price);
-          break;
-        } else if (j === eachCategoryTotalExpense.length - 1) {
-          eachCategoryTotalExpense.push({
-            category: currentYearMonthData[i].category,
-            price: parseFloat(currentYearMonthData[i].price),
-          });
-          break;
-        } else {
-          continue;
-        }
-      }
-    }
-    return eachCategoryTotalExpense;
-  }
-
-  const filteredCurrentYearMonthData = total();
-
-  function split() {
-    const labels = [];
-    const prices = [];
-    filteredCurrentYearMonthData.forEach((data) => {
-      labels.push(data.category);
-      prices.push(data.price);
-    });
-    return [labels, prices];
-  }
-
-  const [labels, prices] = split();
-
   const data = {
     labels: [...labels],
     datasets: [
@@ -104,10 +51,6 @@ function BudgetDetail() {
       },
     ],
   };
-
-  const totalPrice = filteredCurrentYearMonthData.reduce((total, e) => {
-    return (total = total + parseFloat(e.price));
-  }, 0);
 
   return (
     <div className="sm:ml-[200px] p-4">
@@ -156,7 +99,7 @@ function BudgetDetail() {
               return (
                 <div key={index} className="font-Tilt">
                   <div className="text-blue-400 text-2xl">{e.category}</div>
-                  <div className="text-red-600 text-md">{e.price}</div>
+                  <div className="text-red-600 text-md">{currency.format(e.price)}</div>
                   <div>
                     {((parseFloat(e.price) / totalPrice) * 100).toFixed(1)}%
                   </div>
