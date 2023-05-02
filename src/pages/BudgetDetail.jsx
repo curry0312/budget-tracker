@@ -65,7 +65,6 @@ function BudgetDetail() {
   }
 
   const filteredCurrentYearMonthData = total();
-  console.log("filteredCurrentYearMonthData:", filteredCurrentYearMonthData);
 
   function split() {
     const labels = [];
@@ -106,6 +105,10 @@ function BudgetDetail() {
     ],
   };
 
+  const totalPrice = filteredCurrentYearMonthData.reduce((total, e) => {
+    return (total = total + parseFloat(e.price));
+  }, 0);
+
   return (
     <div className="sm:ml-[200px] p-4">
       {/*date*/}
@@ -142,21 +145,32 @@ function BudgetDetail() {
           <NavigateNextIcon />
         </IconButton>
       </div>
-      <div className="flex gap-5">
-        {filteredCurrentYearMonthData.map((e, index) => {
-          return (
-            <div key={index} className="font-Tilt">
-              <div className="text-blue-400 text-2xl">{e.category}</div>
-              <div className="text-red-600 text-md">{e.price}</div>
-            </div>
-          );
-        })}
-      </div>
-      <div className="flex justify-center py-5 flex-1">
-        <div>
-          <Pie data={data} />
+      {filteredCurrentYearMonthData.length === 0 ? (
+        <div className="text-red-800 text-3xl font-Tilt">
+          No Current Year And Month Budget!
         </div>
-      </div>
+      ) : (
+        <>
+          <div className="flex gap-5">
+            {filteredCurrentYearMonthData.map((e, index) => {
+              return (
+                <div key={index} className="font-Tilt">
+                  <div className="text-blue-400 text-2xl">{e.category}</div>
+                  <div className="text-red-600 text-md">{e.price}</div>
+                  <div>
+                    {((parseFloat(e.price) / totalPrice) * 100).toFixed(1)}%
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+          <div className="flex justify-center py-5 flex-1">
+            <div>
+              <Pie data={data} />
+            </div>
+          </div>
+        </>
+      )}
     </div>
   );
 }
