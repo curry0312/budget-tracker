@@ -48,7 +48,10 @@ function BudgetDetail() {
     previousTotalPrice,
     filteredPreviousYearMonthData
   );
-  const perDayAverageComparison = getPerDayAverageComparison(currentTotalPrice,previousTotalPrice)
+  const perDayAverageComparison = getPerDayAverageComparison(
+    currentTotalPrice,
+    previousTotalPrice
+  );
 
   /*Chart Library*/
   ChartJS.register(ArcElement, Tooltip, Legend);
@@ -153,7 +156,7 @@ function BudgetDetail() {
                 Per budget average{" "}
                 <span className="text-sm">(compare with last month)</span>:
               </div>
-              <div className="text-md text-black font-Tilt">
+              <div className="text-md text-black font-Tilt text-2xl">
                 {currency.format(
                   currentTotalPrice /
                     parseFloat(filteredCurrentYearMonthData.length)
@@ -163,7 +166,7 @@ function BudgetDetail() {
                 className={
                   perBudgetAverageComparison > 0
                     ? "text-red-600 flex items-center"
-                    : "text-blue-500 flex items-center"
+                    : "text-green-500 flex items-center"
                 }
               >
                 (
@@ -171,7 +174,7 @@ function BudgetDetail() {
                   <KeyboardDoubleArrowUpIcon />
                 )}
                 {perBudgetAverageComparison < 0 && (
-                  <KeyboardDoubleArrowUpIcon />
+                  <KeyboardDoubleArrowDownIcon />
                 )}
                 <p>{perBudgetAverageComparison}</p>
                 <p>%</p>)
@@ -182,24 +185,24 @@ function BudgetDetail() {
               <div className="text-2xl text-blue-400 font-Tilt">
                 Per day average:
               </div>
-              <div className="font-Tilt">
+              <div className="font-Tilt text-2xl">
                 {currency.format(currentTotalPrice / new Date().getDate())}
               </div>
               <div
                 className={
                   perBudgetAverageComparison > 0
                     ? "text-red-600 flex items-center"
-                    : "text-blue-500 flex items-center"
+                    : "text-green-500 flex items-center"
                 }
               >
                 (
-                {perDayAverageComparison > 0 && (
+                {perBudgetAverageComparison > 0 && (
                   <KeyboardDoubleArrowUpIcon />
                 )}
-                {perDayAverageComparison < 0 && (
-                  <KeyboardDoubleArrowUpIcon />
+                {perBudgetAverageComparison < 0 && (
+                  <KeyboardDoubleArrowDownIcon />
                 )}
-                <p>{perDayAverageComparison}</p>
+                <p>{perBudgetAverageComparison}</p>
                 <p>%</p>)
               </div>
             </div>
@@ -208,7 +211,7 @@ function BudgetDetail() {
               <div className="text-2xl text-blue-400 font-Tilt">
                 Budgets quantitues:
               </div>
-              <div className="font-Tilt">
+              <div className="font-Tilt text-2xl">
                 {filteredCurrentYearMonthData.length}
               </div>
             </div>
