@@ -203,7 +203,8 @@ function BudgetDetail() {
                   <KeyboardDoubleArrowDownIcon />
                 )}
                 <p>{perBudgetAverageComparison}</p>
-                <p>%</p>)
+                <p>%</p>
+                )
               </div>
             </div>
             {/*budgets quantities*/}

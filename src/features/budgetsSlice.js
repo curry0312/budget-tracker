@@ -27,14 +27,14 @@ const initialState = {
     {
       id: "kuwe333df",
       name: "吃2",
-      price: '12',
+      price: '20',
       category: "breakfast",
       date: "2023-04-12",
     },
     {
       id: "dvsvsvsjdvj",
       name: "吃2",
-      price: '30',
+      price: '350',
       category: "dinner",
       date: "2023-04-30",
     },
