@@ -41,7 +41,7 @@ const initialState = {
     {
       id: "9ividvjv",
       name: "吃7",
-      price: '900',
+      price: '100',
       category: "dinner",
       date: "2023-05-01",
     },
@@ -55,7 +55,7 @@ const initialState = {
     {
       id: "jijidvjv",
       name: "吃8",
-      price: '400',
+      price: '200',
       category: "dinner",
       date: "2023-05-02",
     },

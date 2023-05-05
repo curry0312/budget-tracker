@@ -11,5 +11,5 @@ export function getPerBudgetAverageComparison(
     (currentTotalPrice / parseFloat(filteredCurrentYearMonthData.length) -
       previousTotalPrice / parseFloat(filteredPreviousYearMonthData.length)) /
     (previousTotalPrice / parseFloat(filteredPreviousYearMonthData.length))
-  ).toFixed(1);
+  ).toFixed(1)*100;
 }

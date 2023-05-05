@@ -9,5 +9,5 @@ export function getPerDayAverageComparison(
     (currentTotalPrice / new Date().getDate() -
       previousTotalPrice / new Date().getDate()) /
     (previousTotalPrice / new Date().getDate())
-  ).toFixed(1);
+  ).toFixed(1)*100;
 }
