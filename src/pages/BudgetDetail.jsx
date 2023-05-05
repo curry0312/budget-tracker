@@ -13,6 +13,7 @@ import { getAppointYearMonthTotalPrice } from "../logic/getAppointYearMonth/getA
 import { getPerBudgetAverageComparison } from "../logic/getComparison/getPerBudgetAverageComparison";
 import KeyboardDoubleArrowUpIcon from "@mui/icons-material/KeyboardDoubleArrowUp";
 import KeyboardDoubleArrowDownIcon from "@mui/icons-material/KeyboardDoubleArrowDown";
+import { getPerDayAverageComparison } from "../logic/getComparison/getPerDayAverageComparison";
 
 function BudgetDetail() {
   const budgets = useSelector(budgetsSelector);
@@ -47,6 +48,7 @@ function BudgetDetail() {
     previousTotalPrice,
     filteredPreviousYearMonthData
   );
+  const perDayAverageComparison = getPerDayAverageComparison(currentTotalPrice,previousTotalPrice)
 
   /*Chart Library*/
   ChartJS.register(ArcElement, Tooltip, Legend);
@@ -175,10 +177,40 @@ function BudgetDetail() {
                 <p>%</p>)
               </div>
             </div>
+            {/*Per day budgets*/}
+            <div className="flex items-center gap-1">
+              <div className="text-2xl text-blue-400 font-Tilt">
+                Per day average:
+              </div>
+              <div className="font-Tilt">
+                {currency.format(currentTotalPrice / new Date().getDate())}
+              </div>
+              <div
+                className={
+                  perBudgetAverageComparison > 0
+                    ? "text-red-600 flex items-center"
+                    : "text-blue-500 flex items-center"
+                }
+              >
+                (
+                {perDayAverageComparison > 0 && (
+                  <KeyboardDoubleArrowUpIcon />
+                )}
+                {perDayAverageComparison < 0 && (
+                  <KeyboardDoubleArrowUpIcon />
+                )}
+                <p>{perDayAverageComparison}</p>
+                <p>%</p>)
+              </div>
+            </div>
             {/*budgets quantities*/}
             <div className="flex items-center gap-1">
-              <div className="text-2xl text-blue-400 font-Tilt">Budgets quantitues:</div>
-              <div className="font-Tilt">{filteredCurrentYearMonthData.length}</div>
+              <div className="text-2xl text-blue-400 font-Tilt">
+                Budgets quantitues:
+              </div>
+              <div className="font-Tilt">
+                {filteredCurrentYearMonthData.length}
+              </div>
             </div>
           </div>
         </>
