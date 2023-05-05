@@ -7,22 +7,47 @@ import { budgetsSelector } from "../features/budgetsSlice";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 import { Pie } from "react-chartjs-2";
 import { currency } from "../util/currency";
-import { getCurrentYearMonthBudgets } from "../logic/getCurrentYearMonthBudgets";
+import { getAppointYearMonthBudgets } from "../logic/getAppointYearMonth/getAppointYearMonthBudgets";
 import { getSplitLabelsAndPrices } from "../logic/getSplitLabelsAndPrices";
+import { getAppointYearMonthTotalPrice } from "../logic/getAppointYearMonth/getAppointYearMonthTotalPrice";
+import { getPerBudgetAverageComparison } from "../logic/getComparison/getPerBudgetAverageComparison";
+import KeyboardDoubleArrowUpIcon from "@mui/icons-material/KeyboardDoubleArrowUp";
+import KeyboardDoubleArrowDownIcon from "@mui/icons-material/KeyboardDoubleArrowDown";
 
 function BudgetDetail() {
   const budgets = useSelector(budgetsSelector);
   const [year, setYear] = useState(new Date().getFullYear());
   const [month, setMonth] = useState(new Date().getMonth() + 1);
 
-  const filteredCurrentYearMonthData = getCurrentYearMonthBudgets(budgets,year,month);
-  
-  const [labels, prices] = getSplitLabelsAndPrices(filteredCurrentYearMonthData);
+  const filteredCurrentYearMonthData = getAppointYearMonthBudgets(
+    budgets,
+    year,
+    month
+  );
+  const filteredPreviousYearMonthData = getAppointYearMonthBudgets(
+    budgets,
+    year,
+    month - 1
+  );
 
-  const totalPrice = filteredCurrentYearMonthData.reduce((total, e) => {
-    return (total = total + parseFloat(e.price));
-  }, 0);
-  
+  const [labels, prices] = getSplitLabelsAndPrices(
+    filteredCurrentYearMonthData
+  );
+
+  const currentTotalPrice = getAppointYearMonthTotalPrice(
+    filteredCurrentYearMonthData
+  );
+  const previousTotalPrice = getAppointYearMonthTotalPrice(
+    filteredPreviousYearMonthData
+  );
+
+  const perBudgetAverageComparison = getPerBudgetAverageComparison(
+    currentTotalPrice,
+    filteredCurrentYearMonthData,
+    previousTotalPrice,
+    filteredPreviousYearMonthData
+  );
+
   /*Chart Library*/
   ChartJS.register(ArcElement, Tooltip, Legend);
   const data = {
@@ -94,22 +119,66 @@ function BudgetDetail() {
         </div>
       ) : (
         <>
-          <div className="flex gap-5">
+          {/*Category information*/}
+          <div className="flex justify-center items-center gap-5">
             {filteredCurrentYearMonthData.map((e, index) => {
               return (
                 <div key={index} className="font-Tilt">
                   <div className="text-blue-400 text-2xl">{e.category}</div>
-                  <div className="text-red-600 text-md">{currency.format(e.price)}</div>
+                  <div className="text-red-600 text-md">
+                    {currency.format(e.price)}
+                  </div>
                   <div>
-                    {((parseFloat(e.price) / totalPrice) * 100).toFixed(1)}%
+                    {((parseFloat(e.price) / currentTotalPrice) * 100).toFixed(
+                      1
+                    )}
+                    %
                   </div>
                 </div>
               );
             })}
           </div>
+          {/*Pie chart*/}
           <div className="flex justify-center py-5 flex-1">
             <div>
               <Pie data={data} />
+            </div>
+          </div>
+          <div>
+            {/*Per budget average*/}
+            <div className="flex items-center gap-1">
+              <div className="text-2xl text-blue-400 font-Tilt">
+                Per budget average{" "}
+                <span className="text-sm">(compare with last month)</span>:
+              </div>
+              <div className="text-md text-black font-Tilt">
+                {currency.format(
+                  currentTotalPrice /
+                    parseFloat(filteredCurrentYearMonthData.length)
+                )}
+              </div>
+              <div
+                className={
+                  perBudgetAverageComparison > 0
+                    ? "text-red-600 flex items-center"
+                    : "text-blue-500 flex items-center"
+                }
+              >
+                (
+                {perBudgetAverageComparison > 0 && (
+                  <KeyboardDoubleArrowUpIcon />
+                )}
+                {perBudgetAverageComparison < 0 && (
+                  <KeyboardDoubleArrowUpIcon />
+                )}
+                <p>{perBudgetAverageComparison}</p>
+                <p>%</p>)
+              </div>
+            </div>
+            {/*budgets quantities*/}
+            <div className="flex items-center gap-1">
+              <div className="text-2xl text-blue-400 font-Tilt">Budgets quantitues:</div>
+              <div className="font-Tilt">{filteredCurrentYearMonthData.length}</div>
             </div>
           </div>
         </>

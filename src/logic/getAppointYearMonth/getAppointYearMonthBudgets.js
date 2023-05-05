@@ -1,4 +1,4 @@
-export function getCurrentYearMonthBudgets(budgets, year, month) {
+export function getAppointYearMonthBudgets(budgets, year, month) {
   const currentYearMonthData = [];
   console.log(budgets.length);
   for (let i = 0; i < budgets.length; i++) {
