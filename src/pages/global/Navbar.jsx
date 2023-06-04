@@ -16,9 +16,9 @@ function Navbar({isMenuOpen, setIsMenuOpen}) {
       </div>
       {/*routes*/}
       <div className="ml-auto font-Neucha hidden gap-2 sm:flex">
-        <NavbarCustomLink to="/setting" title="Setting" Icon={<SettingsIcon />} />
+        {/* <NavbarCustomLink to="/setting" title="Setting" Icon={<SettingsIcon />} />
         <NavbarCustomLink to="/login" title="Login" Icon={<LoginIcon />} />
-        <NavbarCustomLink to="/signup" title="Signup" Icon={<PersonIcon />} />
+        <NavbarCustomLink to="/signup" title="Signup" Icon={<PersonIcon />} /> */}
       </div>
       {/*sm:hamburger*/}
       <div onClick={()=>setIsMenuOpen(!isMenuOpen)} className="text-white ml-auto sm:hidden">
